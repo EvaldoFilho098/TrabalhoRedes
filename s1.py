@@ -1,9 +1,9 @@
 import socket,threading
 
 def simulacao_cliente(host_2 = 'localhost', port=None): 
-    # Create a TCP/IP socket 
+    # Cria um socket TCP/IP 
     sock_2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-    # Connect the socket to the server 
+    # Conecta o socket no servidor 
     server_address = (host_2, port) 
     print ("Connectando em: %s porta: %s" % server_address) 
     sock_2.connect(server_address)      
@@ -12,20 +12,20 @@ def simulacao_cliente(host_2 = 'localhost', port=None):
 
 
 def Servidor(host = 'localhost', port=8081):
-    data_payload = 2048 #The maximum amount of data to be received at once
-    # Create a TCP socket
+    data_payload = 2048 #Tamanho máximo de dados a ser recebidos em um envio
+    # Cria um socket TCP
     sock = socket.socket(socket.AF_INET,  socket.SOCK_STREAM)
-    # Enable reuse address/port 
+    # Ativar endereço/porta 
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    # Bind the socket to the port
+    # Liga o socket à porta
     server_address = (host, port)
     print ("Servido ligado em: %s porta: %s" % server_address)
     sock.bind(server_address)
-    # Listen to clients, argument specifies the max no. of queued connections
+    # Espera pelos clientes, o argumento especifica o número máximo de conexões enfileiradas
     sock.listen(5) 
     i = 0
     print ("Esperando por Cliente")
-    client, address = sock.accept()
+    client, address = sock.accept() #Aceitar o cliente
     while True: 
         
         #Envia Menu
@@ -91,6 +91,7 @@ def Servidor(host = 'localhost', port=8081):
                     resposta = sock_1.recv(data_payload)
                 sock_1.close()
         elif data.decode() == "3":
+            #Finalizando tudo
             print("Desligando Servidor...")
             resposta = "Finalizado".encode()
             sock_1 = simulacao_cliente(port = 8082)
