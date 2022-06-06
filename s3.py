@@ -11,7 +11,7 @@ def Servidor(host = 'localhost', port=8083):
     sock.bind(server_address)
     # Listen to clients, argument specifies the max no. of queued connections
     sock.listen(5) 
-    i = 0
+    i = 0   
     
     while True: 
         print ("Esperando Solicitacao")
