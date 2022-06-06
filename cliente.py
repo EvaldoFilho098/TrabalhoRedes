@@ -1,8 +1,8 @@
 import socket
 def Cliente(host = 'localhost', port=8081): 
-    # Create a TCP/IP socket 
+    # Cria um socket TCP/IP 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-    # Connect the socket to the server 
+    # Conecta o socket no servidor
     server_address = (host, port) 
     print ("Connectando em: %s porta: %s" % server_address) 
     sock.connect(server_address)        
