@@ -6,23 +6,7 @@ def Cliente(host = 'localhost', port=8081):
     server_address = (host, port) 
     print ("Connectando em: %s porta: %s" % server_address) 
     sock.connect(server_address)        
-    try: 
-        '''
-        while True:
-            #recebe do usuario o Menu ou a Confinrmacao de Finalizadas as operacoes
-            data = sock.recv(2048)
-            if data.decode() != "Finalizado":
-                #Mostra o menu ou a resposta
-                print ("%s" % data.decode())
-                #pega resposta do menu
-                resp = input("> ")
-                #Envia resposta do menu
-                sock.send(resp.encode())
-            else:
-                break
-
-    
-        '''
+    try:
         while True:
             #recebe menu
             data = sock.recv(2048)
