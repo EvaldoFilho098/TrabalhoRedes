@@ -5,7 +5,7 @@ def Cliente(host = 'localhost', port=8081):
     # Connect the socket to the server 
     server_address = (host, port) 
     print ("Connectando em: %s porta: %s" % server_address) 
-    sock.connect(server_address) 
+    sock.connect(server_address)        
     try: 
         '''
         while True:
