@@ -1,20 +1,18 @@
 import socket,threading
 
 def Servidor(host = 'localhost', port=8082):
-    data_payload = 2048 #The maximum amount of data to be received at once
-    # Create a TCP socket
+    data_payload = 2048 #Tamanho máximo de dados a ser recebidos em um envio
+    # Cria um socket TCP
     sock = socket.socket(socket.AF_INET,  socket.SOCK_STREAM)
-    # Enable reuse address/port 
+    # Ativar endereço/porta 
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    # Bind the socket to the port
+    # Liga o socket à porta
     server_address = (host, port)
     print ("Servido ligado em: %s porta: %s" % server_address)
     sock.bind(server_address)
-    # Listen to clients, argument specifies the max no. of queued connections
+   # Espera pelos clientes, o argumento especifica o número máximo de conexões enfileiradas
     sock.listen(5)    
     i = 0
-    #print ("Esperando Solicitacao")
-    #client, address = sock.accept()
     while True: 
         print ("Esperando Solicitacao")
         client, address = sock.accept()
