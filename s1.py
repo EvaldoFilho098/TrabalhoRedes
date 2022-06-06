@@ -6,7 +6,7 @@ def simulacao_cliente(host_2 = 'localhost', port=None):
     # Connect the socket to the server 
     server_address = (host_2, port) 
     print ("Connectando em: %s porta: %s" % server_address) 
-    sock_2.connect(server_address) 
+    sock_2.connect(server_address)      
     
     return sock_2
 
