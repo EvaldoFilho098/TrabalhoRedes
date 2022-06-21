@@ -1,47 +1,57 @@
-import socket, threading
-def Servidor(host = 'localhost', port=8083):
-    data_payload = 2048 #Tamanho máximo de dados a ser recebidos em um envio
+import socket
+
+def Servidor(host = 'localhost', porta=8083): #Parametros padrao para essa funcao: IP=localhost Porta = 8083 (uma nova porta, para um novo servidor estar ouvindo)
+    tamanho = 2048 #Tamanho máximo de dados a ser recebidos em um envio
+    
     # Cria um socket TCP
-    sock = socket.socket(socket.AF_INET,  socket.SOCK_STREAM)
+    socket_servidor_3 = socket.socket(socket.AF_INET,  socket.SOCK_STREAM)
+    
     # Ativar endereço/porta 
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    socket_servidor_3.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    
     # Liga o socket à porta
-    server_address = (host, port)
-    print ("Servido ligado em: %s porta: %s" % server_address)
-    sock.bind(server_address)
+    endereco_servidor = (host, porta)
+    socket_servidor_3.bind(endereco_servidor)
+    print ("Servido ligado em: %s porta: %s" % endereco_servidor)
+    
     # Espera pelos clientes, o argumento especifica o número máximo de conexões enfileiradas
-    sock.listen(5) 
+    socket_servidor_3.listen(5) 
     i = 0   
     
     while True: 
         print ("Esperando Solicitacao")
-        client, address = sock.accept()
+        conexao_servidor_1, address = socket_servidor_3.accept()
+        
         #Recebe o primeiro numero
-        data_1 = client.recv(data_payload) 
-        if data_1.decode() != "Finalizado":
-            print ("Primeira String: %s" %data_1.decode())
+        string_1 = conexao_servidor_1.recv(tamanho) 
+        
+        if string_1.decode() != "Finalizado":
+            print ("Primeira String: %s" %string_1.decode())
+            
             #Envia confirmacao de recebimento
-            client.send("Recebido".encode())
+            conexao_servidor_1.send("Recebido".encode())
+            
             #Recebe o segundo numero
-            data_2 = client.recv(data_payload)
-            print ("Primeira String: %s" %data_2.decode())
-            #fazendo a soma
-            data_1 = data_1.decode()
-            data_2 = data_2.decode()
-            concat = data_1 + data_2
-            resposta = data_1 + " + " + data_2 + " = " + str(concat)
+            string_2 = conexao_servidor_1.recv(tamanho)
+            print ("Primeira String: %s" %string_2.decode())
+            
+            #fazendo a concatenacao
+            string_1 = string_1.decode()
+            string_2 = string_2.decode()
+            concatenacao = string_1 + string_2
+            resposta = string_1 + " + " + string_2 + " = " + str(concatenacao)
             print ("Resposta enviada: %s" %resposta)
-            client.send(str(resposta).encode())
-            # end connection
-            #client.close()
-            #i+=1
-            #if i>=3: break
-        else:
+            
+            #Envia Resposta
+            conexao_servidor_1.send(str(resposta).encode())
+        
+        else: #caso a mensagem seja de desligar, para o loop infinito de execucao
             print("Desligando Servidor")
-            break     
+            break   
+          
+    #Após finalizar o loop, fecha as conexoes com o servidor 1 e o socket deste servidor
     print("Ate Logo!")      
-    client.close
-    sock.close()
-Servidor()
-#thr = threading.Thread(target=Servidor)
-#thr.start()
+    conexao_servidor_1.close
+    socket_servidor_3.close()
+    
+Servidor(host='localhost',porta=8083) #Chama a funcao criada passando os parametros de conexao que serão usados

@@ -1,54 +1,62 @@
 import socket
-def Cliente(host = 'localhost', port=8081): 
+def Cliente(host = 'localhost', porta=8081):  #Parametros padrao para essa funcao: IP=localhost Porta = 8081
     # Cria um socket TCP/IP 
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+    socket_cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+    
     # Conecta o socket no servidor
-    server_address = (host, port) 
-    print ("Connectando em: %s porta: %s" % server_address) 
-    sock.connect(server_address)        
-    try:
+    endereco_servidor = (host, porta)  
+    socket_cliente.connect(endereco_servidor)
+    print ("Connectando em: %s porta: %s" % endereco_servidor)     
+       
+    try: 
+        
         while True:
             #recebe menu
-            data = sock.recv(2048)
-            print ("%s" % data.decode())
+            mensagem_do_servidor = socket_cliente.recv(2048)
+            print ("%s" % mensagem_do_servidor.decode())
+            
             #pega resposta
-            resp = input("> ")
-            if resp != "3":
+            mensagem_de_resposta = input("> ")
+            
+            if mensagem_de_resposta != "3": #A resposta 3 é para sair, caso não seja a resposta 3, executar codigo abaixo
                 #Envia resposta
-                sock.send(resp.encode())
+                socket_cliente.send(mensagem_de_resposta.encode())
 
                 #Recebe primeira solicitacao
-                data = sock.recv(2048)
-                print ("%s" % data.decode())
+                mensagem_do_servidor = socket_cliente.recv(2048)
+                print ("%s" % mensagem_do_servidor.decode())
+                
                 #pega resposta da primeira solicitacao
-                resp = input("> ")
+                mensagem_de_resposta = input("> ")
+                
                 #Envia resposta da primeira solicitacao
-                sock.send(resp.encode())
+                socket_cliente.send(mensagem_de_resposta.encode())
 
                 #Recebe segunda solicitacao
-                data = sock.recv(2048)
-                print ("%s" % data.decode())
+                mensagem_do_servidor = socket_cliente.recv(2048)
+                print ("%s" % mensagem_do_servidor.decode())
+                
                 #pega resposta da segunda solicitacao
-                resp = input("> ")
+                mensagem_de_resposta = input("> ")
+                
                 #Envia resposta da segunda solcitacao
-                sock.send(resp.encode())
+                socket_cliente.send(mensagem_de_resposta.encode())
 
                 #Recebe resposta
-                data = sock.recv(2048)
-                print ("Resposta: %s" % data.decode())
+                mensagem_do_servidor = socket_cliente.recv(2048)
+                print ("\n\nResposta: %s" % mensagem_do_servidor.decode())
 
                 #Envia Confirmacao de Recebimento
-                sock.send("Recebido".encode())
-            else:
-                sock.send(resp.encode())
+                socket_cliente.send("Recebido".encode())
+                
+            else: #Caso seja a resposta 3, envia a resposta para o servidor e para o loop infinito de execução e finaliza o socket
+                socket_cliente.send(mensagem_de_resposta.encode())
+                print ("Desligando...") 
+                socket_cliente.close() 
                 break
 
-    except socket.error as e: 
-        print ("Socket error: %s" %str(e)) 
-    except Exception as e: 
-        print ("Other exception: %s" %str(e)) 
-    finally: 
-        print ("Closing connection to the server") 
-        sock.close() 
+    except:
+        print ("Houve um problema e não foi possível realizar a conexão.\nDesligando...") 
+        socket_cliente.close() 
 
-Cliente('192.168.99.254')
+Cliente(host='localhost',porta=8081) #Chama a funcao criada passando os parametros de conexao que serão usados
